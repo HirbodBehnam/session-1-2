@@ -198,6 +198,55 @@
 
 1. هسته را مجدداً کامپایل و نصب کنید و سیستم را دوباره راه‌اندازی نمایید.
 
+#### کامپایل بر روی ورژن ۵ کرنل لینوکس
+
+در صورتی که از ورژن‌های جدیدتر نسخه‌ی لینوکس استفاده می‌کنید کمی پروسه‌ی نوشتن کرنل ماژول متفاوت می‌تواند باشد.
+
+در ابتدا محتوای فایل
+hello.c
+را به صورت زیر عوض کنید:
+<div dir="ltr">
+
+```cpp
+#include <linux/kernel.h>
+#include <linux/syscalls.h>
+
+SYSCALL_DEFINE0(hello)
+{
+    printk("Hello World\n");
+    return 0;
+}
+```
+</div>
+
+سپس فایل
+`include/linux/syscalls.h`
+را باز کنید و عبارت زیر را به انتهای آن اضافه کنید:
+<div dir="ltr">
+
+```cpp
+asmlinkage long sys_hello(void);
+```
+</div>
+
+در نهایت در انتهای فایل
+`arch/x86/entry/syscalls/syscall_64.tbl`
+خط‌های زیر را اضافه کنید:
+<div dir="ltr">
+
+```
+441 common hello sys_hello
+```
+</div>
+
+دقت کنید که 441 یک عدد ثابت نیست و باید با توجه به عدد آخرین
+syscall
+آنرا تنظیم کنید. حال می‌توانید کرنل لینوکس را کامپایل کنید و از
+syscall
+جدید خود استفاده کنید! برای اطلاعات بیشتر به
+[این](https://armi3.hashnode.dev/how-to-add-a-custom-syscall-to-your-linux-kernel-581-in-ubuntu-2010-groovy-gorilla-ckmh27orq02j0kks123jg30a4) و [این](https://dev.to/jasper/adding-a-system-call-to-the-linux-kernel-5-8-1-in-ubuntu-20-04-lts-2ga8)
+لینک می‌توانید مراجعه کنید.
+
 حالا دو برنامه با کارکرد زیر بنویسید:
 
 - برنامه‌ای بنویسید که از فراخوانی سیستمی hello استفاده کند. برای مشاهده‌ی خروجی چاپ شده آن از دستور dmesg استفاده کنید.
