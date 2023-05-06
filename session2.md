@@ -219,19 +219,9 @@ SYSCALL_DEFINE0(hello)
 ```
 </div>
 
-سپس فایل
-`include/linux/syscalls.h`
-را باز کنید و عبارت زیر را به انتهای آن اضافه کنید:
-<div dir="ltr">
-
-```cpp
-asmlinkage long sys_hello(void);
-```
-</div>
-
 در نهایت در انتهای فایل
 `arch/x86/entry/syscalls/syscall_64.tbl`
-خط‌های زیر را اضافه کنید:
+خط‌های زیر را اضافه کنید به جای خطی که در قسمت قبل ذکر شده بود.
 <div dir="ltr">
 
 ```
